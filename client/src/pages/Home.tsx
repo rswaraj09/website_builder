@@ -57,13 +57,6 @@ const Home = () => {
         </button>
       </form>
 
-      <div className="flex flex-wrap items-center justify-center gap-16 md:gap-20 mx-auto mt-16">
-        <img className="max-w-28 md:max-w-32 opacity-70 grayscale hover:grayscale-0 hover:opacity-100 transition-all" src="https://upload.wikimedia.org/wikipedia/commons/3/33/Framer_logo_2021.png" alt="Framer" />
-        <img className="max-w-28 md:max-w-32 opacity-70 grayscale hover:grayscale-0 hover:opacity-100 transition-all" src="https://upload.wikimedia.org/wikipedia/commons/e/e9/Huawei_Standard_logo.svg" alt="Huawei" />
-        <img className="max-w-28 md:max-w-32 opacity-70 grayscale hover:grayscale-0 hover:opacity-100 transition-all" src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" />
-        <img className="max-w-28 md:max-w-32 opacity-70 grayscale hover:grayscale-0 hover:opacity-100 transition-all" src="https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg" alt="Microsoft" />
-        <img className="max-w-28 md:max-w-32 opacity-70 grayscale hover:grayscale-0 hover:opacity-100 transition-all" src="https://upload.wikimedia.org/wikipedia/commons/1/14/Walmart_Spark.svg" alt="Walmart" />
-      </div>
     </section>
   )
 }
