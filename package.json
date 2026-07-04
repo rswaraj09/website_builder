@@ -1,0 +1,8 @@
+{
+  "name": "ai-website-builder",
+  "private": true,
+  "scripts": {
+    "install": "npm install --prefix client",
+    "build": "npm run build --prefix client"
+  }
+}
