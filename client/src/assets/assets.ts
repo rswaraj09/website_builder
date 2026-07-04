@@ -12,6 +12,33 @@ export const dummyUser = {
     email: 'test@greatstack.dev'
 }
 
+export const appPlans = [
+    {
+        id: 'Basic',
+        name: 'Basic Plan',
+        price: '$9.99',
+        credits: 100,
+        description: 'Perfect for getting started with AI content creation.',
+        features: ['100 Credits', 'Basic Support', 'Standard Models']
+    },
+    {
+        id: 'Pro',
+        name: 'Pro Plan',
+        price: '$29.99',
+        credits: 500,
+        description: 'Ideal for professionals and growing businesses.',
+        features: ['500 Credits', 'Priority Support', 'Advanced Models', 'Faster Processing']
+    },
+    {
+        id: 'Enterprise',
+        name: 'Enterprise Plan',
+        price: '$99.99',
+        credits: 2000,
+        description: 'For large teams and high-volume content generation.',
+        features: ['2000 Credits', '24/7 Dedicated Support', 'All Models', 'API Access']
+    }
+];
+
 export const dummyProjects = [
     {
         id: '6a6a3a97-8fb0-41e9-ad08-3f9e6dc7d359',
