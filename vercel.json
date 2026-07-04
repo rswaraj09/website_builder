@@ -1,6 +1,5 @@
 {
     "version": 2,
-    "outputDirectory": "client/dist",
     "builds": [
         {
             "src": "server/api/index.ts",
@@ -21,7 +20,7 @@
         },
         {
             "source": "/(.*)",
-            "destination": "/index.html"
+            "destination": "/client/index.html"
         }
     ]
 }
