@@ -5,14 +5,8 @@ export const makeRevision = async (req, res) => {
     try {
         const { projectId } = req.params;
         const { message } = req.body;
-        const user = await prisma.user.findUnique({
-            where: { id: userId }
-        });
-        if (!userId || !user) {
+        if (!userId) {
             return res.status(401).json({ message: 'Unauthorized' });
-        }
-        if (user.credits < 5) {
-            return res.status(403).json({ message: 'add more credits to make changes' });
         }
         if (!message || message.trim() === '') {
             return res.status(400).json({ message: 'Please enter a valid prompt' });
@@ -31,12 +25,8 @@ export const makeRevision = async (req, res) => {
                 projectId
             }
         });
-        await prisma.user.update({
-            where: { id: userId },
-            data: { credits: { decrement: 5 } }
-        });
         const promptEnhanceResponse = await openai.chat.completions.create({
-            model: 'xiaomi/mimo-v2-flash:free',
+            model: process.env.AI_MODEL,
             messages: [
                 {
                     role: 'system',
@@ -73,7 +63,7 @@ export const makeRevision = async (req, res) => {
             }
         });
         const codeGenerationResponse = await openai.chat.completions.create({
-            model: 'xiaomi/mimo-v2-flash:free',
+            model: process.env.AI_MODEL,
             messages: [
                 {
                     role: 'system',
@@ -103,10 +93,6 @@ export const makeRevision = async (req, res) => {
                     content: "Unable to generate the code please try again",
                     projectId
                 }
-            });
-            await prisma.user.update({
-                where: { id: userId },
-                data: { credits: { increment: 5 } }
             });
             return;
         }
@@ -138,10 +124,6 @@ export const makeRevision = async (req, res) => {
         res.json({ message: 'Changes made successfully' });
     }
     catch (error) {
-        await prisma.user.update({
-            where: { id: userId },
-            data: { credits: { increment: 5 } }
-        });
         console.log(error);
         res.status(500).json({ message: error.code || error.message });
     }

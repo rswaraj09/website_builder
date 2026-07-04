@@ -6,7 +6,7 @@ import { auth } from './lib/auth.js';
 import userRouter from './routes/userRouter.js';
 import projectRouter from './routes/projectRoutes.js';
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 const corsOptions = {
     origin: process.env.TRUSTED_ORIGINS?.split(',') || [],
     credentials: true,

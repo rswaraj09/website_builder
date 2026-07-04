@@ -1,33 +1,11 @@
 import prisma from '../lib/prisma.js';
 import openai from '../config/ai.js';
-export const getUserCredits = async (req, res) => {
-    try {
-        const userId = req.userId;
-        if (!userId) {
-            return res.status(401).json({ message: 'Unauthorized' });
-        }
-        const user = await prisma.user.findUnique({
-            where: { id: userId }
-        });
-        res.json({ credits: user?.credits });
-    }
-    catch (error) {
-        console.log(error);
-        res.status(500).json({ message: error.code || error.message });
-    }
-};
 export const createUserProject = async (req, res) => {
     const userId = req.userId;
     try {
         const { initial_prompt } = req.body;
         if (!userId) {
             return res.status(401).json({ message: 'Unauthorized' });
-        }
-        const user = await prisma.user.findUnique({
-            where: { id: userId }
-        });
-        if (user && user.credits < 5) {
-            return res.status(403).json({ message: 'add credits to create more projects' });
         }
         const project = await prisma.websiteProject.create({
             data: {
@@ -49,13 +27,9 @@ export const createUserProject = async (req, res) => {
                 projectId: project.id
             }
         });
-        await prisma.user.update({
-            where: { id: userId },
-            data: { credits: { decrement: 5 } }
-        });
         res.json({ projectId: project.id });
         const promptEnhanceResponse = await openai.chat.completions.create({
-            model: 'xiaomi/mimo-v2-flash:free',
+            model: process.env.AI_MODEL,
             messages: [
                 {
                     role: 'system',
@@ -95,7 +69,7 @@ export const createUserProject = async (req, res) => {
             }
         });
         const codeGenerationRespone = await openai.chat.completions.create({
-            model: 'xiaomi/mimo-v2-flash:free',
+            model: process.env.AI_MODEL,
             messages: [
                 {
                     role: 'system',
@@ -139,10 +113,6 @@ export const createUserProject = async (req, res) => {
                     projectId: project.id
                 }
             });
-            await prisma.user.update({
-                where: { id: userId },
-                data: { credits: { increment: 5 } }
-            });
             return;
         }
         // Create Version for the project
@@ -175,10 +145,6 @@ export const createUserProject = async (req, res) => {
         });
     }
     catch (error) {
-        await prisma.user.update({
-            where: { id: userId },
-            data: { credits: { increment: 5 } }
-        });
         console.log(error);
         res.status(500).json({ message: error.message });
     }
@@ -245,30 +211,5 @@ export const togglePublish = async (req, res) => {
     catch (error) {
         console.log(error);
         res.status(500).json({ message: error.code || error.message });
-    }
-};
-export const purchaseCredits = async (req, res) => {
-    try {
-        const plans = {
-            basic: { credits: 100, amount: 5 },
-            pro: { credits: 400, amount: 19 },
-            enterprise: { credits: 1000, amount: 49 },
-        };
-        const userId = req.userId;
-        const { planId } = req.body;
-        const plan = plans[planId];
-        if (!plan) {
-            return res.status(404).json({ message: 'Plan not found' });
-        }
-        const transaction = await prisma.transaction.create({
-            data: {
-                userId: userId,
-                planId: req.body.planId,
-                amount: plan.amount,
-                credits: plan.credits
-            }
-        });
-    }
-    catch (error) {
     }
 };

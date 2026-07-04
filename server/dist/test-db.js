@@ -3,15 +3,15 @@ import 'dotenv/config';
 const prisma = new PrismaClient();
 async function main() {
     try {
-        console.log('Attempting to connect to MongoDB...');
+        console.log('Attempting to connect to Neon PostgreSQL...');
         await prisma.$connect();
-        console.log('Successfully connected to MongoDB!');
+        console.log('Successfully connected to Neon PostgreSQL!');
         // Simple query to test
         const userCount = await prisma.user.count();
         console.log(`Current user count: ${userCount}`);
     }
     catch (error) {
-        console.error('Failed to connect to MongoDB:');
+        console.error('Failed to connect to Neon PostgreSQL:');
         console.error(error);
         process.exit(1);
     }
